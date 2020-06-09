@@ -8,7 +8,13 @@ from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 REQUEST_BODY = """
 {
     "day": "string",
-    "washing_machine_id": "string"
+    "washing_machine_id": "string",
+    "time_slots": [
+        {
+            "start_time": "00:00:00",
+            "end_time": "00:00:00"
+        }
+    ]
 }
 """
 

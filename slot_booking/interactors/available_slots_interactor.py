@@ -26,10 +26,10 @@ class AvailableSlotsInteractor:
 
     def _configure_days_to_book(self, user_id: int):
 
-        user_last_booked_date = self.user_slot_storage.last_booked_date(
+        user_last_booked_date = self.user_slot_storage.last_used_date(
             user_id)
 
-        configure_count = self.configure_slot_storage.book_days_after()
+        configure_count = self.configure_slot_storage.book_no_of_days_after()
 
         if user_last_booked_date:
             present_date = datetime.now().date()
@@ -37,7 +37,7 @@ class AvailableSlotsInteractor:
             not_valid = date_diff.days < configure_count
             if not_valid:
                 configure_count=0
-#        print(configure_count, 33)
+        print(configure_count, 33, user_last_booked_date)
         return configure_count
 
 
@@ -112,23 +112,24 @@ class AvailableSlotsInteractor:
 
 
     def available_slots(self, user_id: int):
-#        print("a"*10)
+        #print("a"*10)
         configure_days_to_book = self._configure_days_to_book(user_id)
+
         user_not_valid_to_book = not configure_days_to_book
         if user_not_valid_to_book:
-#            print("b"*20)
+            #print("b"*20)
             available_slots_dtos_list = []
             available_slots_response = self._available_slots_response(
                 available_slots_dtos_list
             )
 
             return available_slots_response
-
+        
         present_date = datetime.now().date()
         dates_list = self._dates_list(present_date, configure_days_to_book)
         days_list = self._days_list(dates_list)
         available_slots_dtos_list = []
-#        print("b"*20)
+        
         for count in range(configure_days_to_book):
             day = days_list[count]
             date = dates_list[count]
@@ -151,7 +152,7 @@ class AvailableSlotsInteractor:
         available_slots_response = self._available_slots_response(
             available_slots_dtos_list
         )
-    
+        print(available_slots_response)
         return available_slots_response
 
 

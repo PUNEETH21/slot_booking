@@ -76,16 +76,17 @@ class PresenterInterface(ABC):
         pass
 
     @abstractmethod
-    def slot_not_booked_response(self):
+    def raise_exception_for_invalid_time_slot(self):
         pass
 
     @abstractmethod
-    def slot_booked_response(self):
+    def raise_exception_for_no_slots_in_given_date(self):
         pass
 
     @abstractmethod
-    def unavailable_washing_machines_response(self):
+    def get_response_for_slot_not_booked(self):
         pass
+
 
     @abstractmethod
     def get_response_for_add_washing_machine(self):
@@ -101,15 +102,22 @@ class PresenterInterface(ABC):
         pass
 
     @abstractmethod
-    def raise_exception_for_invalid_time_slot(self):
+    def raise_exception_for_invalid_time_slots(self):
         pass
 
     @abstractmethod
     def get_response_for_update_time_slots(self):
         pass
 
-
     @abstractmethod
     def get_response_for_available_slots(self, available_slots_dtos: list):
         pass
 
+    @abstractmethod
+    def get_response_for_slot_booked(self):
+        pass
+
+
+    @abstractmethod
+    def get_response_for_unavailable_washing_machines(self):
+        pass

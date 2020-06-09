@@ -15,7 +15,6 @@ from django.http import HttpResponse
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    # ---------MOCK IMPLEMENTATION---------
 
     request_data = kwargs['request_data']
     washing_machine_id = request_data['washing_machine_id']

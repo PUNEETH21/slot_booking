@@ -7,24 +7,22 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01GetMissedSlotsAPITestCase::test_case status'] = 200
+snapshots['TestCase01AddWmAPITestCase::test_case status'] = 201
 
-snapshots['TestCase01GetMissedSlotsAPITestCase::test_case body'] = {
-    'no_of_missed_slots': 1
-}
+snapshots['TestCase01AddWmAPITestCase::test_case body'] = 'Washing Machine Added Successfully'
 
-snapshots['TestCase01GetMissedSlotsAPITestCase::test_case header_params'] = {
+snapshots['TestCase01AddWmAPITestCase::test_case header_params'] = {
     'content-language': [
         'Content-Language',
         'en'
     ],
     'content-length': [
-        '24',
+        '36',
         'Content-Length'
     ],
     'content-type': [
         'Content-Type',
-        'application/json'
+        'text/html; charset=utf-8'
     ],
     'vary': [
         'Accept-Language, Origin',

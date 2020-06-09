@@ -8,6 +8,8 @@ from datetime import datetime, time
 def test_get_previous_slots_return_previous_slots_dto(user_slot):
     #Arrange
     user_id = 1
+    off_set = 0
+    limit = 5
     storage = UserSlotStorageImplementation()
     expected_slots = [
         PreviousSlotDto(date="2020-05-14", start_time="05:00:00", end_time="06:00:00",
@@ -19,7 +21,9 @@ def test_get_previous_slots_return_previous_slots_dto(user_slot):
     ]
 
     #Act
-    previous_slots = storage.get_previous_slots(user_id=user_id)
+    previous_slots = storage.get_previous_slots(
+        user_id=user_id, off_set=off_set, limit=limit
+    )
 
     #Assert
     assert previous_slots == expected_slots
@@ -28,11 +32,15 @@ def test_get_previous_slots_return_previous_slots_dto(user_slot):
 def test_get_previous_slots_return_previous_slots_dto_empty(user_slot):
     #Arrange
     user_id = 4
+    off_set = 1
+    limit = 5
     storage = UserSlotStorageImplementation()
     expected_slots = []
 
     #Act
-    previous_slots = storage.get_previous_slots(user_id=user_id)
+    previous_slots = storage.get_previous_slots(
+        user_id=user_id, off_set=off_set, limit=limit
+    )
 
     #Assert
     assert previous_slots == expected_slots

@@ -8,8 +8,10 @@ from slot_booking.models.configure_slot import ConfigureSlot
 
 class ConfigureSlotStorageImplementation(ConfigureSlotStorageInterface):
 
-    def book_days_after(self):
+    def book_no_of_days_after(self):
+        print("123")
         conf_obj = ConfigureSlot.objects.all().last()
+        print(conf_obj)
         if conf_obj:
             book_days_after = conf_obj.book_days_after
             return book_days_after

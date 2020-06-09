@@ -7,17 +7,21 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01BookASlotAPITestCase::test_case status'] = 200
+snapshots['TestCase01GetWmDetailsAPITestCase::test_case status'] = 400
 
-snapshots['TestCase01BookASlotAPITestCase::test_case body'] = b''
+snapshots['TestCase01GetWmDetailsAPITestCase::test_case body'] = {
+    'http_status_code': 400,
+    'res_status': 'INVALID_WASHING_MACHINE_ID',
+    'response': 'Invalid Washing Machine Id, try with valid Washing Machine Id'
+}
 
-snapshots['TestCase01BookASlotAPITestCase::test_case header_params'] = {
+snapshots['TestCase01GetWmDetailsAPITestCase::test_case header_params'] = {
     'content-language': [
         'Content-Language',
         'en'
     ],
     'content-length': [
-        '0',
+        '146',
         'Content-Length'
     ],
     'content-type': [

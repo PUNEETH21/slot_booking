@@ -10,9 +10,9 @@ snapshots = Snapshot()
 snapshots['TestCase01UpdateSlotsAPITestCase::test_case status'] = 400
 
 snapshots['TestCase01UpdateSlotsAPITestCase::test_case body'] = {
-    'time_slots': [
-        'This field is required.'
-    ]
+    'http_status_code': 400,
+    'res_status': 'INVALID_DAY',
+    'response': 'Invalid Day, try with valid Day'
 }
 
 snapshots['TestCase01UpdateSlotsAPITestCase::test_case header_params'] = {
@@ -21,12 +21,12 @@ snapshots['TestCase01UpdateSlotsAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '42',
+        '101',
         'Content-Length'
     ],
     'content-type': [
         'Content-Type',
-        'application/json'
+        'text/html; charset=utf-8'
     ],
     'vary': [
         'Accept-Language, Origin',

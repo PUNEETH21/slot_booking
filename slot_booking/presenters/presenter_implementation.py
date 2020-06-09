@@ -8,12 +8,12 @@ from slot_booking.constants.exception_messages import (
     INVALID_END_TIME_EXCEPTION, INVALID_START_TIME_EXCEPTION, 
     UNAVAILABLE_WASHING_MACHINES_EXCEPTION, CANNOT_BOOK_IN_DATE_EXCEPTION,
     WASHING_MACHINE_ID_ALREADY_EXIST_EXCEPTION,
-    INVALID_TIME_SLOTS_EXCEPTION
+    INVALID_TIME_SLOTS_EXCEPTION, NO_SLOTS_IN_GIVEN_DATE_EXCEPTION,
+    INVALID_TIME_SLOT_EXCEPTION
     )
     
 from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest
 
-#from slot_booking.dtos.dtos import AvailableSlotsDto
 from slot_booking.dtos.dtos import (
     WashingMachineSlotsDto, PreviousSlotDto, TimeSlotDto, UpcomingSlotDto,
     UserAuthTokensDto, WashingMachineDetailsDto
@@ -23,17 +23,22 @@ from typing import List
 
 class PresenterImplementation(PresenterInterface):
 
+
     def is_valid_password(self, password: str):
         pass
+
 
     def raise_exception_for_invalid_username(self):
         raise BadRequest(*INVALID_USERNAME_EXCEPTION)
 
+
     def raise_exception_for_invalid_password(self):
         raise BadRequest(*INVALID_PASSWORD_EXCEPTION)
 
+
     def raise_exception_for_invalid_username_password(self):
         raise BadRequest(*INVALID_USERNAME_PASSWORD_EXCEPTION)
+
 
     def get_response_for_login(self, token_details_dto: UserAuthTokensDto):
         response_dict = {}
@@ -120,6 +125,10 @@ class PresenterImplementation(PresenterInterface):
         raise BadRequest(*CANNOT_BOOK_IN_DATE_EXCEPTION)
 
 
+    def raise_exception_for_no_slots_in_given_date(self):
+        raise BadRequest(*NO_SLOTS_IN_GIVEN_DATE_EXCEPTION)
+
+
     def raise_exception_for_invalid_start_time(self):
         raise BadRequest(*INVALID_START_TIME_EXCEPTION)
 
@@ -128,16 +137,20 @@ class PresenterImplementation(PresenterInterface):
         raise BadRequest(*INVALID_END_TIME_EXCEPTION)
 
 
-    def unavailable_washing_machines_response(self):
-        return "Unavailable Washing machines"
+    def raise_exception_for_invalid_time_slot(self):
+        raise BadRequest(*INVALID_TIME_SLOT_EXCEPTION)
 
 
-    def slot_not_booked_response(self):
-        pass
+    def get_response_for_unavailable_washing_machines(self):
+        return "Unavailable Washing Machines Slot Not Booked"
 
 
-    def slot_booked_response(self):
-        pass
+    def get_response_for_slot_booked(self):
+        return "Slot Booked Successfully"
+
+
+    def get_response_for_slot_not_booked(self):
+        return "Slot Not Booked"
 
 
     def get_response_for_add_washing_machine(self):
@@ -160,7 +173,7 @@ class PresenterImplementation(PresenterInterface):
         raise BadRequest(*WASHING_MACHINE_ID_ALREADY_EXIST_EXCEPTION)
 
 
-    def raise_exception_for_invalid_time_slot(self):
+    def raise_exception_for_invalid_time_slots(self):
         raise BadRequest(*INVALID_TIME_SLOTS_EXCEPTION)
 
 
@@ -170,7 +183,6 @@ class PresenterImplementation(PresenterInterface):
 
 
     def get_response_for_available_slots(self, available_slots_dtos: list):
-        response = {}
         available_slots_list = []
 
         for available_slot_dtos in available_slots_dtos:
@@ -183,10 +195,10 @@ class PresenterImplementation(PresenterInterface):
                 time_slot_dict["start_time"] = time_slot_dto.start_time
                 time_slot_dict["end_time"] = time_slot_dto.end_time
                 time_slot_dict["is_available"] = time_slot_dto.is_available
-            
+
                 time_slots_list.append(time_slot_dict)
 
-            available_slots_dict["date"] = available_slot_dtos.date
+            available_slots_dict["date"] = str(available_slot_dtos.date)
             available_slots_dict["time_slots"] = time_slots_list
 
             available_slots_list.append(available_slots_dict)

@@ -42,7 +42,7 @@ class PreviousSlotsDto:
 
 @dataclass
 class WashingMachineDto:
-    wm_id : str
+    wm_ids : list
 
 @dataclass
 class WashingMachineDetailsDto:

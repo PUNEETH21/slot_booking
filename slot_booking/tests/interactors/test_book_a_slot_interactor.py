@@ -1,58 +1,61 @@
-# from unittest.mock import create_autospec
-# from datetime import datetime
-# from slot_booking.interactors.storages.washing_machine_slot_storage_interface \
-#     import WashingMachineSlotStorageInterface
+from unittest.mock import create_autospec
+from datetime import datetime
+from slot_booking.interactors.storages.washing_machine_slot_storage_interface \
+    import WashingMachineSlotStorageInterface
 
-# from slot_booking.interactors.storages.user_slot_storage_interface \
-#     import UserSlotStorageInterface
-# from slot_booking.interactors.storages.configure_slot_storage_interface \
-#     import ConfigureSlotStorageInterface
+from slot_booking.interactors.storages.user_slot_storage_interface \
+    import UserSlotStorageInterface
+from slot_booking.interactors.storages.configure_slot_storage_interface \
+    import ConfigureSlotStorageInterface
 
-# from slot_booking.interactors.presenters.presenter_interface import \
-#     PresenterInterface
+from slot_booking.interactors.presenters.presenter_interface import \
+    PresenterInterface
 
-# from slot_booking.interactors.book_a_slot_interactor import \
-#     BookASlotInteractor
+from slot_booking.interactors.book_a_slot_interactor import \
+    BookASlotInteractor
 
-# from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest
-# import pytest
-# import calendar 
-# from freezegun import freeze_time
-# import unittest
-# import mock
-# from unittest.mock import patch
+from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest
+import pytest
+import time
+from freezegun import freeze_time
+import unittest
+import mock
+from unittest.mock import patch
 
-# @freeze_time("2020-09-14")
-# #@mock.patch('datetime.datetime', return_value=datetime.datetime(2021, 1, 1))
-# def test_book_a_slot_raises_exception_for_invalid_date():
-#     #Arrange
-#     user_id=1
-#     start_time = "19:22:46.810366"
-#     end_time = "20:22:46.810366"
-#     mock_date = '2020-04-01'
-#     washing_machine_slot_storage = create_autospec(
-#         WashingMachineSlotStorageInterface
-#     )
-#     user_slot_storage = create_autospec(UserSlotStorageInterface)
-#     configure_slot_storage = create_autospec(ConfigureSlotStorageInterface)
-#     presenter = create_autospec(PresenterInterface)
-#     interactor = BookASlotInteractor(
-#         user_slot_storage=user_slot_storage,
-#         configure_slot_storage = configure_slot_storage,
-#         washing_machine_slot_storage=washing_machine_slot_storage,
-#         presenter=presenter
-#     )
-#     presenter.raise_exception_for_invalid_date.side_effect=BadRequest
+@freeze_time("2020-09-14")
+#@patch('slot_booking.interactors.book_a_slot_interactor.datetime')
+#def test_book_a_slot_raises_exception_for_invalid_date(mock_date_time):
 
-#     #Act
-#     with pytest.raises(BadRequest):
-#         interactor.book_a_slot(
-#             user_id=user_id, date=mock_date, start_time=start_time, 
-#             end_time=end_time
-#         )
+def test_book_a_slot_raises_exception_for_invalid_date():
+    #Arrange
+    user_id=1
+    start_time = "19:22:46.810366"
+    end_time = "20:22:46.810366"
+    #mock_date_time.now().date.return_value = "2000-03-01"
+    mock_date = '2020-04-01'
+    washing_machine_slot_storage = create_autospec(
+        WashingMachineSlotStorageInterface
+    )
+    user_slot_storage = create_autospec(UserSlotStorageInterface)
+    configure_slot_storage = create_autospec(ConfigureSlotStorageInterface)
+    presenter = create_autospec(PresenterInterface)
+    interactor = BookASlotInteractor(
+        user_slot_storage=user_slot_storage,
+        configure_slot_storage = configure_slot_storage,
+        washing_machine_slot_storage=washing_machine_slot_storage,
+        presenter=presenter
+    )
+    presenter.raise_exception_for_invalid_date.side_effect=BadRequest
 
-#     #Assert
-#     presenter.raise_exception_for_invalid_date.assert_called_once_with()
+    #Act
+    with pytest.raises(BadRequest):
+        interactor.book_a_slot(
+            user_id=user_id, date=mock_date, start_time=start_time, 
+            end_time=end_time
+        )
+
+    #Assert
+    presenter.raise_exception_for_invalid_date.assert_called_once_with()
 
 
 # def test_book_a_slot_raises_exception_for_cannot_book_in_date():

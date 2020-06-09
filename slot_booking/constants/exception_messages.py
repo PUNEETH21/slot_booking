@@ -43,6 +43,11 @@ CANNOT_BOOK_IN_DATE_EXCEPTION = (
     "CANNOT_BOOK_IN_DATE"
 )
 
+NO_SLOTS_IN_GIVEN_DATE_EXCEPTION = (
+    "No slots in given Date, try with another Date",
+    "NO_SLOTS_IN_GIVEN_DATE"
+)
+
 INVALID_START_TIME_EXCEPTION = (
     "Invalid Start time, try with valid Start time",
     "INVALID_START_TIME"
@@ -56,6 +61,11 @@ INVALID_END_TIME_EXCEPTION = (
 UNAVAILABLE_WASHING_MACHINES_EXCEPTION = (
     "Unavailable Washing machines, try with other slots",
     "UNAVAILABLE_WASHING_MACHINES"
+)
+
+INVALID_TIME_SLOT_EXCEPTION = (
+    "Invalid Time Slot, try with valid Time Slot",
+    "INVALID_TIME_SLOT"
 )
 
 INVALID_TIME_SLOTS_EXCEPTION = (

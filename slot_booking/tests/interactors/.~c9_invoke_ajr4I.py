@@ -145,7 +145,7 @@ def test_update_slots_interactor_raise_invalid_time_slots(invalid_time_slot_mock
         presenter=presenter
     )
 
-    invalid_time_slot_mock.return_value = False
+    invalid_time_slot_mock.return_value = True
     washing_machine_storage.is_valid_washing_machine_id.return_value = True
     presenter.raise_exception_for_invalid_time_slots.side_effect = \
         BadRequest
@@ -199,7 +199,7 @@ def test_update_slots_interactor_returns_updated_response(invalid_time_slot_mock
 
     
     washing_machine_storage.is_valid_washing_machine_id.return_value = True
-    invalid_time_slot_mock.return_value = True
+    invalid_time_slot_mock.return_value = False
     presenter.get_response_for_update_time_slots.return_value = \
         expected_updated_response
 

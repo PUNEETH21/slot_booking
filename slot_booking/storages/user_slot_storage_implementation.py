@@ -54,40 +54,36 @@ class UserSlotStorageImplementation(UserSlotStorageInterface):
         return user_slot_dto_list
 
 
-    def cannot_book_in_date(self, user_id: int, present_date: str,
-        book_days_after: int
+    def last_used_date(self, user_id: int):
+        last_used_date = UserSlot.objects.filter(user_id=user_id).last()
+
+        if last_used_date:
+            return last_used_date.date
+
+        return False
+
+
+    def available_washing_machine(
+        self, user_slot_wm_ids: list, washing_machines_ids: list
     ):
-        last_date = UserSlot.objects.filter(user_id=user_id).last()
-        if last_date:
-            difference = present_date-last_date.date
-            days = difference.days
-            user_valid_to_book_in_date = book_days_after <= days
-            if user_valid_to_book_in_date:
-                return True
-            else:
-                return False
-        else:
-            return True
-
-
-
-    def available_washing_machine(self, user_slot_wm_ids, washing_machines):
-        for wm_id in washing_machines:
+        for wm_id in washing_machines_ids:
             user_wm_id = wm_id not in user_slot_wm_ids
             if user_wm_id:
                 return wm_id
+        return None
 
 
     def create_slot(self, date: str, start_time: str, 
         end_time: str, washing_machine_id: str, user_id: int
     ):
+        #print("\n"*3, user_id, 234, "\n")
         UserSlot.objects.create(date=date, start_time=start_time,
             end_time=end_time, washing_machine_id=washing_machine_id,
             user_id=user_id
         )
 
     def create_user_slot(self, user_id: int, date: str, start_time: str, 
-        end_time: str, washing_machines: List[int]
+        end_time: str, washing_machines_ids: List[int]
     ):
         user_slot_wm_ids = UserSlot.objects.filter(
             date=date, start_time=start_time, end_time=end_time).values_list(
@@ -96,7 +92,7 @@ class UserSlotStorageImplementation(UserSlotStorageInterface):
         if user_slot_wm_ids:
             washing_machine_id = self.available_washing_machine(
                 user_slot_wm_ids,
-                washing_machines
+                washing_machines_ids
             )
             if washing_machine_id:
                 self.create_slot(date=date, start_time=start_time,
@@ -105,11 +101,11 @@ class UserSlotStorageImplementation(UserSlotStorageInterface):
                     user_id=user_id
                 )
                 return True
-            else:
-                return False
+
+            return False
 
         else:
-            washing_machine_id = washing_machines[0]
+            washing_machine_id = washing_machines_ids[0]
             self.create_slot(date=date, start_time=start_time,
                 end_time=end_time, washing_machine_id=washing_machine_id,
                 user_id=user_id
@@ -133,12 +129,13 @@ class UserSlotStorageImplementation(UserSlotStorageInterface):
             )
 
         return user_slots_dtos_list
+
     
-    def last_booked_date(self, user_id: int):
-        user_obj = UserSlot.objects.filter(user_id=user_id).last()
-        if user_obj:
-            user_last_slot_date = user_obj.date
-            return user_last_slot_date
+    # def last_booked_date(self, user_id: int):
+    #     user_obj = UserSlot.objects.filter(user_id=user_id).last()
+    #     if user_obj:
+    #         user_last_slot_date = user_obj.date
+    #         return user_last_slot_date
 
     
     
@@ -148,6 +145,7 @@ class UserSlotStorageImplementation(UserSlotStorageInterface):
     
     
     
+
 
 
 
@@ -157,6 +155,20 @@ class UserSlotStorageImplementation(UserSlotStorageInterface):
 
 
 '''
+
+        if last_date:
+            difference = present_date-last_date.date
+            days = difference.days
+            user_valid_to_book_in_date = book_days_after <= days
+            if user_valid_to_book_in_date:
+                return True
+            else:
+                return False
+        else:
+            return True
+
+
+
     def get_alloted_slots(self, day: str, washing_machine_id: str):
         wm_objs = WashingmachineSlot.objects.filter(
             day=day, washing_machine_id=washing_machine_id)

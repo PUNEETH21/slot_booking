@@ -18,6 +18,8 @@ def test_get_previous_slots_interactor_returns_previous_slots(
     previous_slots_dtos):
     #Arrange
     user_id = 2
+    off_set= 0
+    limit = 3
     expected_slots = {
       "previous_slots":  [
             {
@@ -49,12 +51,12 @@ def test_get_previous_slots_interactor_returns_previous_slots(
 
     #Act
     previous_slots = interactor.get_previous_slots(
-        user_id=user_id)
+        user_id=user_id, off_set=off_set, limit=limit)
 
     #Assert
 
     user_slot_storage.get_previous_slots.assert_called_once_with(
-        user_id=user_id)
+        user_id=user_id, off_set=off_set, limit=limit)
     presenter.get_response_for_previous_slots.assert_called_once_with(
         previous_slots_dtos)
     assert previous_slots == expected_slots
@@ -63,6 +65,8 @@ def test_get_previous_slots_interactor_returns_empty_previous_slots(
     ):
     #Arrange
     user_id = 2
+    off_set = 0
+    limit = 3
     previous_slots_dtos = []
     expected_slots = {
       "previous_slots":  []
@@ -82,12 +86,12 @@ def test_get_previous_slots_interactor_returns_empty_previous_slots(
 
     #Act
     previous_slots = interactor.get_previous_slots(
-        user_id=user_id)
+        user_id=user_id, off_set=off_set, limit=limit)
 
     #Assert
 
     user_slot_storage.get_previous_slots.assert_called_once_with(
-        user_id=user_id)
+        user_id=user_id, off_set=off_set, limit=limit)
     presenter.get_response_for_previous_slots.assert_called_once_with(
         previous_slots_dtos)
     assert previous_slots == expected_slots

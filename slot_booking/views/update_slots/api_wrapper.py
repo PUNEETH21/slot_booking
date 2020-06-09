@@ -18,15 +18,13 @@ from django.http import HttpResponse
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    # ---------MOCK IMPLEMENTATION---------
 
-    print("@"*100, kwargs)
-    print("3"*30, args)
-    request_data = kwargs['request_data']
+    request_data = kwargs["request_data"]
+
     day = request_data['day']
     washing_machine_id = request_data['washing_machine_id']
     time_slots = request_data['time_slots']
-    print("#"*100, time_slots)
+
     washing_machine_storage = WashingMachineStorageImplementation()
     washing_machine_slot_storage = WashingMachineSlotStorageImplementation()
     presenter = PresenterImplementation()
@@ -43,5 +41,5 @@ def api_wrapper(*args, **kwargs):
     )
 
     data = json.dumps(update_response)
-    response = HttpResponse(data, status=202)
+    response = HttpResponse(data, status=200)
     return response

@@ -22,26 +22,23 @@ from django.http import HttpResponse
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    # ---------MOCK IMPLEMENTATION---------
-
 
     user_id=kwargs["user_dto"].user_id
-    print(user_id)
     user_slot_storage = UserSlotStorageImplementation()
     configure_slot_storage = ConfigureSlotStorageImplementation()
     washing_machine_slot_storage = WashingMachineSlotStorageImplementation()
     presenter = PresenterImplementation()
-
+    print(user_id)
     interactor = AvailableSlotsInteractor(
         user_slot_storage=user_slot_storage,
         configure_slot_storage=configure_slot_storage,
         washing_machine_slot_storage=washing_machine_slot_storage,
         presenter=presenter
     )
-#    user_id=4
-    available_slots = interactor.available_slots(user_id=4)
-#    print(345, available_slots)
-    
+
+    #user_id=3
+    available_slots = interactor.available_slots(user_id=user_id)
+    print("#"*33, user_id)
     data = json.dumps(available_slots)
     
     response = HttpResponse(data, status=200)
