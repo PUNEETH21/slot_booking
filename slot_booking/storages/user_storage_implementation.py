@@ -16,14 +16,6 @@ class UserStorageImplementation(UserStorageInterface):
         return False
 
 
-    def is_valid_password(self, password: str):
-        is_password_exist = User.objects.filter(password=password).first()
-        if is_password_exist:
-            return True
-        else:
-            return False
-
-
     def is_valid_username_password(self, username: str, password: str) -> \
         Optional:
 

@@ -1,0 +1,345 @@
+{
+    "swagger": "2.0",
+    "host": "127.0.0.1:8000",
+    "basePath": "/api/resource_management/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Simple API",
+        "description": "A simple API to learn how to write OpenAPI Specification"
+    },
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users"
+            },
+            "type": "oauth2"
+        }
+    },
+    "security": [],
+    "definitions": {
+        "Forms": {
+            "type": "object",
+            "properties": {
+                "form_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "form_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updates": {
+                    "type": "string"
+                },
+                "total_items": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pending_items": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estimated_cost": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "cost_incurred": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "Brand": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "brand_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "SnackItem": {
+            "type": "object",
+            "properties": {
+                "item_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                },
+                "description": {
+                    "type": "string",
+                },
+                "brands": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Brand"
+                    }
+                },
+                "price": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+
+            },
+            "required": [
+                "item_id", "name", "description", "brands", "price"
+            ]
+        }
+    },
+
+    "parameters": {
+
+        "OffsetQueryParameter": {
+            "name": "off_set",
+            "in": "query",
+            "description": "off_set",
+            "type": "integer",
+            "format": "int64",
+            "required": true
+        },
+
+        "LimitQueryParameter": {
+            "name": "limit",
+            "in": "query",
+            "description": "limit",
+            "type": "integer",
+            "format": "int64",
+            "required": true
+        },
+
+        "SnackItemsParameter": {
+            "name": "snack_items",
+            "in": "body",
+            "description": "snack_items",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "snack_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/SnackItem"
+                        }
+                    }
+                },
+                "required": [
+                    "snack_items"
+                ]
+            }
+        }
+    },
+
+    "responses": {
+
+        "FormsResponse": {
+            "description": "get_forms",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/Forms"
+                        }
+                    },
+                    "total_forms_count": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            }
+        },
+
+
+        "SnackItemsResponse": {
+            "description": "Snack items details",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "snack_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/SnackItem"
+                        }
+                    },
+                    "total_cost": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "total_number_of_items": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "close_on": {
+                        "type": "string",
+                        "format": "datetime"
+                    }
+                }
+            }
+        },
+
+        "SnackItemsBadRequestResponse": {
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_NAME",
+                            "INVALID_DESCRIPTION", "INVALID_BRAND",
+                            "INVALID_QUANTITY", "INVALID_PRICE"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
+        }
+    },
+    "paths": {
+
+
+        "/forms/v1/": {
+            "get": {
+                "operationId": "get_forms",
+                "summary": "get_forms",
+                "description": "get_forms",
+                "security": [{
+                    "oauth": [
+                        "read",
+                        "write"
+                    ]
+                }],
+
+                "parameters": [{
+                        "$ref": "#/parameters/OffsetQueryParameter"
+                    },
+                    {
+                        "$ref": "#/parameters/LimitQueryParameter"
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/FormsResponse"
+                    }
+                }
+            }
+        },
+
+        "/snack_form/v1/": {
+            "get": {
+                "operationId": "get_snack_items",
+                "summary": "snack_items",
+                "description": "get_snack_items",
+                "security": [{
+                    "oauth": [
+                        "read",
+                        "write"
+                    ]
+                }],
+
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SnackItemsResponse"
+                    }
+                }
+            },
+
+            "post": {
+                "operationId": "snack_items",
+                "summary": "snack_items",
+                "description": "snack_items",
+                "security": [{
+                    "oauth": [
+                        "read",
+                        "write"
+                    ]
+                }],
+
+                "parameters": [{
+                    "$ref": "#/parameters/SnackItemsParameter"
+                }],
+
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SnackItemsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/SnackItemsBadRequestResponse"
+                    }
+                }
+            }
+        }
+    }
+}
+
+''
+'
+
+from slot_booking.interactors.storages.washing_machine_storage_interface\
+import WashingMachineStorageInterface
+from slot_booking.interactors.presenters.presenter_interface
+import\
+PresenterInterface
+
+class AddWashingMachineInteractor:
+
+    def __init__(self,
+        washing_machine_storage: WashingMachineStorageInterface,
+        presenter: PresenterInterface):
+
+    self.washing_machine_storage = washing_machine_storage
+self.presenter = presenter
+
+def add_washing_machine(self, washing_machine_id: str):
+
+    washing_machine_id_already_exist = \
+    self.washing_machine_storage.is_valid_washing_machine_id(
+        washing_machine_id
+    )
+
+if washing_machine_id_already_exist:
+    self.presenter.raise_exception_for_washing_machine_id_already_exist()
+return
+
+is_active = True
+self.washing_machine_storage.add_washing_machine(
+    washing_machine_id, is_active
+)
+
+response = self.presenter.get_response_for_add_washing_machine()
+return response
+
+''
+'

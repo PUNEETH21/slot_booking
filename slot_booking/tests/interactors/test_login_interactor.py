@@ -139,6 +139,42 @@ def test_invalid_username_raise_exceptions():
     storage.is_valid_username.assert_called_once_with(username=username)
     presenter.raise_exception_for_invalid_username.assert_called_once_with()
 
+
+def test_invalid_username_password_raise_exceptions():
+    #Arrange
+    username = "user"
+    password = "passwd"
+
+    storage = create_autospec(UserStorageImplementation())
+    oauth2_storage = OAuth2SQLStorage()
+    presenter = create_autospec(PresenterImplementation())
+    interactor = LogInInteractor(
+        storage=storage,
+        oauth2_storage=oauth2_storage,
+        presenter=presenter
+        )
+
+    storage.is_valid_username_password.return_value = False
+    presenter.raise_exception_for_invalid_password.side_effect = \
+        BadRequest
+
+    #Act
+    with pytest.raises(BadRequest):
+        interactor.login(
+            username=username,
+            password=password
+            )
+
+    #Assert
+    storage.is_valid_username.assert_called_once_with(username=username)
+    storage.is_valid_username_password.assert_called_once_with(
+        username=username,
+        password=password
+    )
+    presenter.raise_exception_for_invalid_password.assert_called_once_with()
+
+
+'''
 def test_invalid_password_raise_exceptions():
     #Arrange
     username = "user"
@@ -168,38 +204,5 @@ def test_invalid_password_raise_exceptions():
     storage.is_valid_password.assert_called_once_with(password=password)
     presenter.raise_exception_for_invalid_password.assert_called_once_with()
 
-
-def test_invalid_username_and_password_raise_exceptions():
-    #Arrange
-    username = "user"
-    password = "passwd"
-
-    storage = create_autospec(UserStorageImplementation())
-    oauth2_storage = OAuth2SQLStorage()
-    presenter = create_autospec(PresenterImplementation())
-    interactor = LogInInteractor(
-        storage=storage,
-        oauth2_storage=oauth2_storage,
-        presenter=presenter
-        )
-
-    storage.is_valid_username_password.return_value = False
-    presenter.raise_exception_for_invalid_username_password.side_effect = \
-        BadRequest
-
-    #Act
-    with pytest.raises(BadRequest):
-        interactor.login(
-            username=username,
-            password=password
-            )
-
-    #Assert
-    storage.is_valid_username.assert_called_once_with(username=username)
-    storage.is_valid_password.assert_called_once_with(password=password)
-    storage.is_valid_username_password.assert_called_once_with(
-        username=username,
-        password=password
-    )
-    presenter.raise_exception_for_invalid_username_password.assert_called_once_with()
+'''
 

@@ -170,6 +170,26 @@
             "allOf": [{
                 "$ref": "#/definitions/PreviousSlots"
             }]
+        },
+
+
+        "InvalidUsername": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                },
+                "res_status": {
+                    "type": "string",
+                    "enum": [
+                        "INVALID_USERNAME"
+                    ]
+                }
+            },
+            "required": [
+                "msg",
+                "res_status"
+            ]
         }
 
     },
@@ -248,7 +268,6 @@
             }
         },
 
-
         "BookASlotParameter": {
             "name": "book_a_slot",
             "in": "body",
@@ -269,14 +288,12 @@
             "in": "body",
             "description": "update a slot",
             "schema": {
-
                 "allOf": [{
                         "$ref": "#/definitions/Day"
                     },
                     {
                         "$ref": "#/definitions/WashingMachineId"
-                    },
-                    {
+                    }, {
                         "type": "object",
                         "properties": {
                             "time_slots": {
@@ -296,6 +313,28 @@
     },
 
     "responses": {
+
+        "LoginBadRequestResponse": {
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_USERNAME", "INVALID_PASSWORD"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
+        },
 
         "LogInResponse": {
             "description": "welcome",
@@ -326,27 +365,34 @@
         },
 
         "InvalidUsernameResponse": {
-            "description": "Invalid Username"
-        },
-
-        "UpdateWashingMachineSlotsSuccessResponse": {
-            "description": "successfully updated the slots"
+            "description": "BadRequest",
+            "schema": {
+                "$ref": "#/definitions/InvalidUsername"
+            }
         },
 
         "UpdateBadRequestResponse": {
-            "description": "Invalid Day, Invalid Washing Machine Id, Invalide Time Slots"
-        },
-
-        "SignUpResponse": {
-            "description": "User Created Successfully"
-        },
-
-        "NotFoundResponse": {
-            "description": "Not Found"
-        },
-
-        "SignUpBadRequestResponse": {
-            "description": "Bad Request account not created"
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_DAY",
+                            "INVALID_WASHING_MACHINE_ID",
+                            "INVALID_TIME_SLOTS"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
         },
 
         "NotBookASlotResponse": {
@@ -357,38 +403,96 @@
             "description": "Slot Booked Successfully, Slot Not Booked,  Unavailable Washing Machines Slot Not Booked"
         },
 
-
         "BookASlotBadRequestResponse": {
-            "description": "Invalid Date, Invalid Time Slot"
-        },
-
-        "AuthenticationBadRequestResponse": {
-            "description": "Invalid Username, Invalid Password, Invalid Username Password"
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_DATE", "INVALID_TIME_SLOT"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
         },
 
         "InvalidWashingMachineIdResponse": {
-            "description": "Invalid Washing Machine Id"
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_WASHING_MACHINE_ID"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
         },
 
         "WashingMachineIdAlreadyExistResponse": {
-            "description": "Washing Machine Id Already Exist"
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "WASHING_MACHINE_ID_ALREADY_EXIST"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
         },
+
 
         "WashingMachineSlotsBadRequestResponse": {
-            "description": "Invalid Washing machine id, Invalid Day"
+            "description": "BadRequest",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_DAY",
+                            "INVALID_WASHING_MACHINE_ID"
+                        ]
+                    }
+                },
+                "required": [
+                    "msg",
+                    "res_status"
+                ]
+            }
         },
 
-        "BadRequestResponse": {
-            "description": "Invalid Date, Invalid Start time, Invalid End time, Invalid Washing machine id"
-        },
-
-        "AddWashingMachineResponse": {
-            "description": "Washing Machine Added Successfully"
-        },
-
-        "AddWashingMachineBadRequestResponse": {
-            "description": "Invalid Status"
-        },
 
         "AvaliableSlotsResponse": {
             "description": "avaliable slots",
@@ -481,7 +585,7 @@
 
                 "responses": {
                     "201": {
-                        "$ref": "#/responses/SignUpResponse"
+                        "description": "User Created Successfully"
                     },
                     "400": {
                         "$ref": "#/responses/InvalidUsernameResponse"
@@ -505,31 +609,30 @@
                         "$ref": "#/responses/LogInResponse"
                     },
                     "400": {
-                        "$ref": "#/responses/AuthenticationBadRequestResponse"
+                        "$ref": "#/responses/LoginBadRequestResponse"
                     }
                 }
             }
         },
+"/avaliable_slots/v1/": {
+    "get": {
+        "operationId": "get_avaliable_slots",
+        "summary": "avaliable slots",
+        "description": "avaliable slots to use",
+        "security": [{
+            "oauth": [
+                "read",
+                "write"
+            ]
+        }],
 
-        "/avaliable_slots/v1/": {
-            "get": {
-                "operationId": "get_avaliable_slots",
-                "summary": "avaliable slots",
-                "description": "avaliable slots to use",
-                "security": [{
-                    "oauth": [
-                        "read",
-                        "write"
-                    ]
-                }],
-
-                "responses": {
-                    "200": {
-                        "$ref": "#/responses/AvaliableSlotsResponse"
-                    }
-                }
+        "responses": {
+            "200": {
+                "$ref": "#/responses/AvaliableSlotsResponse"
             }
-        },
+        }
+    }
+},
 
         "/book_a_slot/v1/": {
             "post": {
@@ -594,7 +697,7 @@
 
                 "responses": {
                     "201": {
-                        "$ref": "#/responses/AddWashingMachineResponse"
+                        "description": "Washing Machine Added Successfully"
                     },
                     "400": {
                         "$ref": "#/responses/WashingMachineIdAlreadyExistResponse"
@@ -675,7 +778,7 @@
 
                 "responses": {
                     "201": {
-                        "$ref": "#/responses/UpdateWashingMachineSlotsSuccessResponse"
+                        "description": "successfully updated the slots"
                     },
                     "400": {
                         "$ref": "#/responses/UpdateBadRequestResponse"

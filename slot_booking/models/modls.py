@@ -27,4 +27,8 @@ class WashingmachineSlot(models.Model):
     end_time = models.TimeField()
     washing_machine = models.ForeignKey(Washingmachine, on_delete=models.CASCADE)
 
-def 
+def valid_washing_machine_id(self, washing_machine_id):
+    invalid_washing_machine_id = washing_machine_id <= 0
+    if invalid_washing_machine_id:
+        pass
+     

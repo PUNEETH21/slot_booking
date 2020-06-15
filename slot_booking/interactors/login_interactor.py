@@ -23,11 +23,6 @@ class LogInInteractor:
         if invalid_username:
             self.presenter.raise_exception_for_invalid_username()
 
-        invalid_password = not self.storage.is_valid_password(
-            password=password)
-        if invalid_password:
-            self.presenter.raise_exception_for_invalid_password()
-
         user_obj = self.storage.is_valid_username_password(
                 username=username,
                 password=password
@@ -35,7 +30,7 @@ class LogInInteractor:
 
         is_invalid_user_password = not user_obj
         if is_invalid_user_password:
-            self.presenter.raise_exception_for_invalid_username_password()
+            self.presenter.raise_exception_for_invalid_password()
             return
 
         service = OAuthUserAuthTokensService(

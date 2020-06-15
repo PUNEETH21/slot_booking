@@ -32,32 +32,6 @@ def test_login_invalid_username_return_false(user):
     assert actual_bool == expected_bool
 
 @pytest.mark.django_db
-def test_login_invalid_password_return_true(user):
-    #Arrange
-    password = "password"
-    expected_bool = True
-    storage = UserStorageImplementation()
-
-    #Act
-    actual_bool = storage.is_valid_password(password=password)
-
-    #Assert
-    assert actual_bool == expected_bool
-
-@pytest.mark.django_db
-def test_login_invalid_password_return_false(user):
-    #Arrange
-    password = "pass"
-    expected_bool = False
-    storage = UserStorageImplementation()
-
-    #Act
-    actual_bool = storage.is_valid_password(password=password)
-
-    #Assert
-    assert actual_bool == expected_bool
-
-@pytest.mark.django_db
 def test_login_invalid_username_password_return_user_id(user):
     #Arrange
     username = "username"
